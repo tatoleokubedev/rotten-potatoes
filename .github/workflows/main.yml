@@ -58,3 +58,18 @@ jobs:
           creds: ${{ secrets.AKS_CREDS }}
           resource-group: DefaultResourceGroup-CUS
           cluster-name: myAKSCluster
+
+      - name: Deploy Mongo
+        uses: Azure/k8s-deploy@v1
+        with:
+          manifests: |
+            kube/mongo/deployment.yaml
+            kube/mongo/service.yaml
+            
+      - name: Deploy WEB
+        uses: Azure/k8s-deploy@v1
+        with:
+          manifests: |
+            kube/web/deployment.yaml
+            kube/web/service.yaml
+          images: tatoleokubedev/rotten-potatoes:v${{ github.run_number }}
